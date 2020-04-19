@@ -23,6 +23,40 @@ public class LinkedList<E> {
         public String toString() {
             return e.toString();
         }
+
+        /**
+         * 链表节点的构造函数
+         * 使用arr数组为参数，创建一个链表，当前的Node为链表头结点
+         *
+         * @param arr
+         */
+        public Node(E[] arr) {
+            if (arr == null || arr.length == 0) {
+                throw new IllegalArgumentException("arr can not be empty.");
+            }
+            this.e = arr[0];
+            Node cur = this;
+            for (int i = 1; i < arr.length; i++) {
+                cur.next = new Node(arr[i]);
+                cur = cur.next;
+            }
+        }
+
+        /**
+         * 以当前节点为头结点的链表信息字符串
+         *
+         * @return
+         */
+        public String printNode() {
+            StringBuilder res = new StringBuilder();
+            Node cur = this;
+            while (cur != null) {
+                res.append(cur.e + "->");
+                cur = cur.next;
+            }
+            res.append("NULL");
+            return res.toString();
+        }
     }
 
     private Node dummyHead;
