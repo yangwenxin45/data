@@ -1,5 +1,7 @@
 package net.yangwenxin.mooc;
 
+import java.util.Stack;
+
 public class BST<E extends Comparable<E>> {
 
     private class Node {
@@ -109,6 +111,28 @@ public class BST<E extends Comparable<E>> {
     }
 
     /**
+     * 二叉搜索树的非递归前序遍历
+     */
+    public void preOrderNR() {
+        Stack<Node> stack = new Stack<>();
+        if (root != null) {
+            stack.push(root);
+        }
+        while (!stack.empty()) {
+            Node cur = stack.pop();
+            System.out.println(cur.e);
+
+            // 因为栈是后进先出的
+            if (cur.right != null) {
+                stack.push(cur.right);
+            }
+            if (cur.left != null) {
+                stack.push(cur.left);
+            }
+        }
+    }
+
+    /**
      * 二分搜索树的中序遍历
      */
     public void inOrder() {
@@ -181,10 +205,12 @@ public class BST<E extends Comparable<E>> {
         bst.preOrder();
         System.out.println();
 
-        bst.inOrder();
-        System.out.println();
+        bst.preOrderNR();
 
-        bst.postOrder();
-        System.out.println();
+//        bst.inOrder();
+//        System.out.println();
+//
+//        bst.postOrder();
+//        System.out.println();
     }
 }
