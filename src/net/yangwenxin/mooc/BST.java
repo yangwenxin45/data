@@ -1,5 +1,7 @@
 package net.yangwenxin.mooc;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class BST<E extends Comparable<E>> {
@@ -164,6 +166,26 @@ public class BST<E extends Comparable<E>> {
         System.out.println(node.e);
     }
 
+    /**
+     * 二分搜索树的层序遍历
+     */
+    public void levelOrder() {
+        Queue<Node> queue = new LinkedList<>();
+        if (root != null) {
+            queue.add(root);
+        }
+        while (!queue.isEmpty()) {
+            Node cur = queue.remove();
+            System.out.println(cur.e);
+            if (cur.left != null) {
+                queue.add(cur.left);
+            }
+            if (cur.right != null) {
+                queue.add(cur.right);
+            }
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
@@ -202,10 +224,13 @@ public class BST<E extends Comparable<E>> {
         for (int num : nums) {
             bst.add(num);
         }
-        bst.preOrder();
-        System.out.println();
 
-        bst.preOrderNR();
+        bst.levelOrder();
+
+//        bst.preOrder();
+//        System.out.println();
+//
+//        bst.preOrderNR();
 
 //        bst.inOrder();
 //        System.out.println();
