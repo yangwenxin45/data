@@ -3,6 +3,7 @@ package net.yangwenxin.mooc;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.*;
 
 public class BST<E extends Comparable<E>> {
 
@@ -51,6 +52,7 @@ public class BST<E extends Comparable<E>> {
      */
     private Node add(Node node, E e) {
         if (node == null) {
+            size++;
             return new Node(e);
         }
         if (e.compareTo(node.e) < 0) {
@@ -186,6 +188,78 @@ public class BST<E extends Comparable<E>> {
         }
     }
 
+    // 寻找二分搜索树的最小元素
+    public E minimum() {
+        if (size == 0) {
+            throw new IllegalArgumentException("BST is empty!");
+        }
+        return minimum(root).e;
+    }
+
+    // 返回以node为根的二分搜索树的最小值所在的节点
+    private Node minimum(Node node) {
+        if (node.left == null) {
+            return node;
+        }
+        return minimum(node.left);
+    }
+
+    // 寻找二分搜索树的最大元素
+    public E maximum() {
+        if (size == 0) {
+            throw new IllegalArgumentException("BST is empty!");
+        }
+        return maximum(root).e;
+    }
+
+    // 返回以node为根的二分搜索树的最大值所在的节点
+    private Node maximum(Node node) {
+        if (node.right == null) {
+            return node;
+        }
+        return maximum(node.right);
+    }
+
+    // 从二分搜索树中删除最小值所在节点，返回最小值
+    public E removeMin() {
+        E ret = minimum();
+        root = removeMin(root);
+        return ret;
+    }
+
+    // 删除掉以node为根的二分搜索树中的最小节点
+    // 返回删除节点后新的二分搜索树的根
+    private Node removeMin(Node node) {
+        if (node.left == null) {
+            Node rightNode = node.right;
+            node.right = null;
+            size--;
+            return rightNode;
+        }
+        node.left = removeMin(node.left);
+        return node;
+    }
+
+    // 从二分搜索树中删除最大值所在节点
+    public E removeMax() {
+        E ret = maximum();
+        root = removeMax(root);
+        return ret;
+    }
+
+    // 删除掉以node为根的二分搜索树中的最大节点
+    // 返回删除节点后新的二分搜索树的根
+    private Node removeMax(Node node) {
+        if (node.right == null) {
+            Node leftNode = node.left;
+            node.left = null;
+            size--;
+            return leftNode;
+        }
+        node.right = removeMax(node.right);
+        return node;
+    }
+
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
@@ -220,22 +294,43 @@ public class BST<E extends Comparable<E>> {
 
     public static void main(String[] args) {
         BST<Integer> bst = new BST<>();
-        int[] nums = {28, 16, 13, 22, 30, 29, 42};
-        for (int num : nums) {
-            bst.add(num);
+        Random random = new Random();
+        int n = 1000;
+
+        // test removeMin
+        for (int i = 0; i < n; i++) {
+            bst.add(random.nextInt(10000));
         }
 
-        bst.levelOrder();
+        List<Integer> nums = new ArrayList<>();
+        while (!bst.isEmpty()) {
+            nums.add(bst.removeMin());
+        }
+        System.out.println(nums);
 
-//        bst.preOrder();
-//        System.out.println();
-//
-//        bst.preOrderNR();
+        for (int i = 1; i < nums.size(); i++) {
+            if (nums.get(i - 1) > nums.get(i)) {
+                throw new IllegalArgumentException("Error");
+            }
+        }
+        System.out.println("removeMin test completed.");
 
-//        bst.inOrder();
-//        System.out.println();
-//
-//        bst.postOrder();
-//        System.out.println();
+        // test removeMax
+        for (int i = 0; i < n; i++) {
+            bst.add(random.nextInt(10000));
+        }
+
+        nums = new ArrayList<>();
+        while (!bst.isEmpty()) {
+            nums.add(bst.removeMax());
+        }
+        System.out.println(nums);
+
+        for (int i = 1; i < nums.size(); i++) {
+            if (nums.get(i - 1) < nums.get(i)) {
+                throw new IllegalArgumentException("Error");
+            }
+        }
+        System.out.println("removeMin test completed.");
     }
 }
